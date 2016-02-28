@@ -86,6 +86,11 @@ body {
 	background:#333;
 }
 
+.main .center .bottom .video .player_wrapper {
+	margin: 0 auto !important;
+	width: 100% !important;
+}
+
 
 .main .center .bottom .chat {
 	flex:1;
