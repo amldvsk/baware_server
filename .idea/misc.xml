@@ -5,7 +5,6 @@
       <BehatSettings behat_path="/Applications/MAMP/htdocs/pollisfy-website/vendor/bin/behat" />
     </behat_settings>
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
@@ -16,5 +15,4 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="ProjectRootManager" version="2" />
 </project>

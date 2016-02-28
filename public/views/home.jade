@@ -1,0 +1,31 @@
+doctype html
+html.no-js(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='x-ua-compatible', content='ie=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Baware
+    link(rel='stylesheet', href='./css/foundation.css')
+    link(rel='stylesheet', href='./css/app.css')
+  body(lang='he', dir='rtl')
+    .main
+      .right-nav
+        .logo
+          img(src='img/logo.svg')
+      .center
+        .upper
+          .map
+            #googleMap
+        .bottom
+          .video
+            h5 וידאו
+          .chat
+            h5.text-center צ׳אט
+      .left-nav
+        h5 קריאות נכנסות
+    script(src='./js/vendor/jquery.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='http://maps.googleapis.com/maps/api/js?language=he')
+    script(src='./js/vendor/what-input.min.js')
+    script(src='./js/foundation.min.js')
+    script(src='./js/app.js')

@@ -1,0 +1,123 @@
+
+body {
+	direction:rtl;
+	background:#EEF3F7;
+}
+
+.main {
+	display: -webkit-flex; /* Safari */
+	display: flex;
+	-webkit-flex-direction: row; /* Safari */
+	flex-direction:         row;
+	-webkit-flex-wrap: nowrap; /* Safari */
+  	flex-wrap:         nowrap;
+  	-webkit-justify-content: flex-start; /* Safari */
+  	justify-content:         flex-start;  	
+  	height: 100%;
+}
+
+
+.main h5 {
+	color:#fff;
+	font-weight: bolder;
+	text-align: center;
+}
+
+
+.main .center {
+	flex:1;
+
+	display: -webkit-flex; /* Safari */
+	display: flex;
+	-webkit-flex-direction: column; /* Safari */
+	flex-direction:         column;
+	-webkit-flex-wrap: nowrap; /* Safari */
+  	flex-wrap:         nowrap;
+  	-webkit-justify-content: flex-start; /* Safari */
+  	justify-content:         flex-start;  	
+  	height: 100%;
+
+}
+
+
+.main .center .upper {
+	flex:1;
+	position:relative;
+}
+
+
+.main .center .upper .map {
+	flex: 1;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.main .center .upper .map #googleMap {
+	height:100%;
+	width:100%;
+	position:relative;
+}
+
+
+.main .center .bottom {
+	flex:1;
+}
+
+
+.main .center .bottom {
+	display: -webkit-flex; /* Safari */
+	display: flex;
+	-webkit-flex-direction: row; /* Safari */
+	flex-direction:         row;
+	-webkit-flex-wrap: nowrap; /* Safari */
+  	flex-wrap:         nowrap;
+  	-webkit-justify-content: flex-start; /* Safari */
+  	justify-content:         flex-start;  	
+  	height: 100%;
+}
+
+
+.main .center .bottom .video {
+	flex:1;
+	background:#333;
+}
+
+
+.main .center .bottom .chat {
+	flex:1;
+}
+
+
+.main .center .bottom .chat h5 {
+	color:#000;
+}
+
+
+.main .right-nav {
+	background:#333;
+	width:200px;
+}
+
+.main .right-nav .logo {
+	padding: 15px 35px;
+}
+
+
+.main .right-nav .logo img {
+	height:45px;
+	width:auto;
+	display:block;
+	margin: 0 auto;
+}
+
+
+.main .left-nav {
+	background:#637484;
+	width:300px;
+}
+
+
