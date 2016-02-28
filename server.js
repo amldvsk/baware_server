@@ -6,8 +6,7 @@ var express = require('express'),
 mongoose = mongoose.connect('mongodb://localhost/baware');
 
 var app = express();
-app.use(bodyParser.urlencoded( { extended : true } ));
-app.use(bodyParser.json());
+
 
 app.use(function (req, res, next) {
 
@@ -28,8 +27,14 @@ app.use(function (req, res, next) {
     next();
 });
 
-
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json({limit: '2mb'}));
+app.use(bodyParser.urlencoded({limit: '2mb', extended : true}));
+
+
+
+
+
 
 app.set('views', './public/views');
 app.set('view engine', 'jade');
