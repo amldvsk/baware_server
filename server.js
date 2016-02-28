@@ -9,9 +9,17 @@ var app = express();
 app.use(bodyParser.urlencoded( { extended : true } ));
 app.use(bodyParser.json());
 
-
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
 app.use('/api', require('./routes/api'));
 
+
+app.get('/', function(req, res) {
+    res.send('working');
+});
 
 var io = require('socket.io').listen(app.listen(3000, '0.0.0.0', function() {
     console.log('Listening to port:  ' + 3000);
