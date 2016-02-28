@@ -36,7 +36,7 @@ function startPlayer(id) {
         width: jw_width,
         stretching: 'exactfit',
         sources: [{
-            file: 'rtmp://http://37.139.20.85/:1935/live/'+id
+            file: 'rtmp://37.139.20.85/:1935/live/'+id
         }],
         rtmp: {
             bufferlength: 3
