@@ -36,7 +36,7 @@ function startPlayer(id) {
         width: jw_width,
         stretching: 'exactfit',
         sources: [{
-            file: 'rtmp://localhost:1935/testing/police/'+id
+            file: 'rtmp://http://37.139.20.85/:1935/live/'+id
         }],
         rtmp: {
             bufferlength: 3
@@ -91,7 +91,7 @@ function initialize() {
 
 
 
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
 
 
 
