@@ -2,7 +2,7 @@ $(document).foundation();
 
 
 
-
+jwplayer.key = "D1v8Fw6eKkzR6cKxgcciMrRu5JJVMgFNOuwgjg=="
 var map;
 var data = [];
 var jw_width = 640, jw_height = 500;
