@@ -86,7 +86,7 @@ body {
 	background:#333;
 }
 
-.main .center .bottom .video .player_wrapper {
+.main .center .bottom .video #player_wrapper {
 	margin: 0 auto !important;
 	width: 100% !important;
 }

@@ -10,25 +10,6 @@ var markers = [];
 
 
 
-//$(document).ready(function() {
-//    init();
-//});
-//
-//
-//$(window).on('resize', function() {
-//    init();
-//});
-//
-//function init() {
-//    console.log($(window).height());
-//    $('#map').css({
-//        height : $(window).height() - $('nav').height() - 50
-//    });
-//
-//    $('.chat-log-messages ul').css({
-//        height : $(window).height() - 160
-//    });
-//}
 
 function startPlayer(id) {
     jwplayer('player').setup({
