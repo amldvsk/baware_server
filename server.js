@@ -1,6 +1,7 @@
 var express = require('express'),
     mongoose = require('mongoose'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser')
+    morgan = require('morgan');
 
 
 mongoose = mongoose.connect('mongodb://localhost/baware');
