@@ -38,7 +38,7 @@ function startPlayer(id) {
 
 
 
-var socket = io('http://37.139.20.85');
+var socket = io('http://37.139.20.85:3000');
 socket.on ('new', function(msg) {
     console.log (msg);
     startPlayer(msg.userId);
