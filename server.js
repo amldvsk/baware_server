@@ -1,8 +1,8 @@
 var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser')
-    morgan = require('morgan');
-
+    morgan = require('morgan')
+    path = require('path');
 
 mongoose = mongoose.connect('mongodb://localhost/baware');
 
@@ -30,7 +30,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(express.static(__dirname + './public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json({limit: '2mb'}));
 app.use(bodyParser.urlencoded({limit: '2mb', extended : true}));
 app.use(morgan('dev'));
