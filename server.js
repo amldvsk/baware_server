@@ -86,3 +86,6 @@ io.on('connection', function(socket){
 
 
 });
+
+
+//To access Wowza Streaming Engine Manager, go to http://localhost:8088/enginemanager in a web browser.
