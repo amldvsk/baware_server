@@ -56,8 +56,8 @@ socket.on ('connectionClosed', function(msg) {
 socket.on ('message', function(msg) {
     console.log (msg);
 
-    $('.main .center .bottom .chat ul').append('<li class="other">' +
-            '<div><p>'+msg.msg+'</p></div>' +
+    $('.main .center .bottom .chat ul').append('<li>' +
+            '<div class="other"><p>'+msg.msg+'</p></div>' +
         '</li>');
 
 });

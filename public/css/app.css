@@ -113,11 +113,12 @@ body {
 
 
 .main .center .bottom .chat ul li {
-	max-width: 90%;
+	width: 100%;
+	margin: 15px 0;
 	padding: 10px;
 }
 
-.main .center .bottom .chat ul li.me {
+.main .center .bottom .chat ul li .me {
 	float: right;
 	background: #fff;
 	box-shadow: 1px 1px rgba(0,0,0,0.1);
@@ -125,7 +126,7 @@ body {
 }
 
 
-.main .center .bottom .chat ul li.other {
+.main .center .bottom .chat ul li .other {
 	float: left;
 	background: #fff;
 	border-radius: 4px;
