@@ -22,8 +22,10 @@ html.no-js(lang='he')
           .chat
             ul
             div.send-message
-                textarea#message
-                button#sendMessage
+                .input-group
+                      textarea.input-group-field#message
+                      .input-group-button
+                        input.button#sendMessage(type='submit', value='Submit')
       .left-nav
         h5 קריאות נכנסות
     script(src='js/vendor/jquery.min.js')
