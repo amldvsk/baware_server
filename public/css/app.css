@@ -107,24 +107,31 @@ body {
 	width: 100%;
 	height: 100%;
 	overflow-y: auto;
+	padding: 15px;
 }
 
 
 .main .center .bottom .chat ul li {
 	max-width: 90%;
+	padding: 10px;
 }
 
-.main .center .bottom .chat ul li .me {
+.main .center .bottom .chat ul li.me {
 	float: right;
 	background: #fff;
 	border-radius: 4px;
 }
 
 
-.main .center .bottom .chat ul li .other {
+.main .center .bottom .chat ul li.other {
 	float: left;
 	background: #fff;
 	border-radius: 4px;
+}
+
+
+.main .center .bottom .chat ul li p {
+	margin: 0;
 }
 
 
