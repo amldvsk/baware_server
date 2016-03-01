@@ -64,6 +64,17 @@ socket.on ('message', function(msg) {
 
 
 
+$('#sendMessage').on('click', function() {
+
+    if( $('#message').val().trim().length > 0 ) {
+        socket.emit('message', $('#message').val().trim());
+    }
+
+    return false;
+});
+
+
+
 function initialize() {
 
     var myLatlng = new google.maps.LatLng(31.220414, 34.802358);
