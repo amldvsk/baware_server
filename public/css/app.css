@@ -98,6 +98,10 @@ body {
 }
 
 
+.main .center .bottom .chat .send-message {
+	display: none;
+}
+
 .main .center .bottom .chat ul {
 	margin: 0;
 	padding: 0;
