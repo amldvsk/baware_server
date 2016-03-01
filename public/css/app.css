@@ -89,12 +89,42 @@ body {
 .main .center .bottom .video #player_wrapper {
 	margin: 0 auto !important;
 	width: 100% !important;
-	height: 100% !important;
 }
 
 
 .main .center .bottom .chat {
 	flex:1;
+	position: relative;
+}
+
+
+.main .center .bottom .chat ul {
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top:0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+}
+
+
+.main .center .bottom .chat ul li {
+	max-width: 90%;
+}
+
+.main .center .bottom .chat ul li .me {
+	float: right;
+	background: #fff;
+	border-radius: 4px;
+}
+
+
+.main .center .bottom .chat ul li .other {
+	float: left;
+	background: #fff;
+	border-radius: 4px;
 }
 
 
