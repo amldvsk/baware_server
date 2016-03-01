@@ -53,6 +53,10 @@ socket.on ('connectionClosed', function(msg) {
 });
 
 
+socket.on ('message', function(msg) {
+    console.log (msg);
+});
+
 
 
 function initialize() {
