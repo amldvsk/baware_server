@@ -106,6 +106,10 @@ body {
 	width: 100%;
 }
 
+
+.main .center .bottom .chat .send-message .input-group {
+	margin: 0;
+}
 .main .center .bottom .chat ul {
 	margin: 0;
 	padding: 0;
