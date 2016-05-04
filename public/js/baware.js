@@ -10,23 +10,39 @@ app.config(function($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvid
     });
 
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/');
 
     $stateProvider
 
         // HOME STATES AND NESTED VIEWS ========================================
-        .state('home', {
+        .state('/', {
             url: '/',
+            templateUrl : '../views/dispatch/welcome.html',
+            controller : 'MainController'
+        })
+
+
+        .state('dept', {
+            url: '/dept/:dept/:id',
+            templateUrl : '../views/dispatch/dash.html',
+            controller : 'DispatchController'
         })
 
 });
 
 
-app.controller('MainController', ['$scope' , '$timeout', '$http',MainController]);
+app.controller('MainController', ['$scope' ,MainController]);
+app.controller('DispatchController', ['$scope' , '$timeout', '$http',DispatchController]);
 
 
-function MainController($scope, $timeout, $http) {
-    console.log('MainController');
+
+function MainController($scope) {
+        console.log('MainController');
+
+}
+
+function DispatchController($scope, $timeout, $http) {
+    console.log('DispatchController');
 
     $scope.map = { center: { latitude: 31.220414, longitude: 34.802358 }, zoom: 10 };
 
@@ -105,6 +121,7 @@ function MainController($scope, $timeout, $http) {
         $scope.markers.push(marker);
         $scope.map = { center: { latitude: 31.253168, longitude: 34.789222 }, zoom: 16 };
         getAddress(31.253168, 34.789222);
+        $scope.videoActive = true;
     }, 5000);
 
 
