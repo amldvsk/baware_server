@@ -5,9 +5,9 @@
 jwplayer.key = "D1v8Fw6eKkzR6cKxgcciMrRu5JJVMgFNOuwgjg=="
 var map;
 var data = [];
-var jw_width = 640, jw_height = 500;
+var h = ( $(window).height() / 2 );
+var jw_width = 640, jw_height = h;
 var markers = [];
-
 
 
 
@@ -36,31 +36,31 @@ function startPlayer(id) {
 }
 
 
+//startPlayer();
 
-
-var socket = io('http://37.139.20.85:3000');
-socket.on ('new', function(msg) {
-    console.log (msg);
-    startPlayer(msg.userId);
-    CentralPark = new google.maps.LatLng(parseFloat(msg.lat), parseFloat(msg.long));
-    addMarker(CentralPark, parseFloat(msg.lat), parseFloat(msg.long), msg.userId);
-});
-
-
-socket.on ('connectionClosed', function(msg) {
-    console.log (msg);
-    deleteMarker(msg);
-});
-
-
-socket.on ('message', function(msg) {
-    console.log (msg);
-
-    $('.main .center .bottom .chat ul').append('<li class="clearfix">' +
-            '<div class="other"><p>'+msg.msg+'</p></div>' +
-        '</li>');
-
-});
+//var socket = io('http://37.139.20.85:3000');
+//socket.on ('new', function(msg) {
+//    console.log (msg);
+//    startPlayer(msg.userId);
+//    CentralPark = new google.maps.LatLng(parseFloat(msg.lat), parseFloat(msg.long));
+//    addMarker(CentralPark, parseFloat(msg.lat), parseFloat(msg.long), msg.userId);
+//});
+//
+//
+//socket.on ('connectionClosed', function(msg) {
+//    console.log (msg);
+//    deleteMarker(msg);
+//});
+//
+//
+//socket.on ('message', function(msg) {
+//    console.log (msg);
+//
+//    $('.main .center .bottom .chat ul').append('<li class="clearfix">' +
+//            '<div class="other"><p>'+msg.msg+'</p></div>' +
+//        '</li>');
+//
+//});
 
 
 

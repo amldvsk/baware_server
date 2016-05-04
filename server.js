@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({limit: '2mb', extended : true}));
 app.use(morgan('dev'));
 
 app.set('views', './public/views');
-app.set('view engine', 'jade');
+//app.set('view engine', 'jade');
 
 
 
@@ -47,8 +47,12 @@ app.use('/api', require('./routes/api'));
 
 
 
-app.get('/', function(req, res) {
-    res.render('home', {});
+//app.get('/', function(req, res) {
+//    res.render('home', {});
+//});
+
+app.get('*', function(req, res) {
+    res.sendfile('./public/views/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
 var io = require('socket.io').listen(app.listen(3000, '0.0.0.0', function() {

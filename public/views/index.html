@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="he" ng-app="baware">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baware</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body lang="he" dir="rtl" ng-cloak ng-controller="MainController">
+<nav>
+    <div class="logo"><img src="img/logo.svg"></div>
+</nav>
+<div class="main-wrapper">
+    <div class="row-wapper">
+        <div class="map">
+            <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                <ui-gmap-marker ng-repeat="marker in markers" coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
+                </ui-gmap-marker>
+            </ui-gmap-google-map>
+        </div>
+        <div class="video hidden">
+            <div id="player"></div>
+        </div>
+    </div>
+    <div class="row-wapper">
+        <div class="calls">
+            <div class="header">
+                <h4>קריאות</h4>
+            </div>
+            <ul class="list-unstyled list-view" scroll-glue>
+                <li class="clearfix">
+                    <div class="col-md-4"><p><strong>מזהה</strong></p></div>
+                    <div class="col-md-4"><p><strong></strong></p></div>
+                    <div class="col-md-4"><p><strong></strong></p></div>
+                </li>
+                <li ng-repeat="call in calls" class="clearfix">
+                    <div class="col-md-4"><p>{{ call.id }}</p></div>
+                    <div class="col-md-4"><p>{{ call.location.address }}</p></div>
+                    <div class="col-md-2"><p>{{ call.location.lng }}</p></div>
+                    <div class="col-md-2"><p>{{ call.location.lng }}</p></div>
+                </li>
+            </ul>
+        </div>
+        <div class="chat">
+            <div class="header">
+                <h4>שיחה עם</h4>
+            </div>
+            <ul class="list-unstyled chat-view clearfix " scroll-glue>
+                <li class="clearfix" ng-repeat="msg in msgs">
+                    <div class="message" ng-class="{ user : msg.dispatch == 0 }">
+                        <p class="person" ng-if="msg.dispatch == 1" ><small ><i class="fa fa-headphones"></i> מוקד</small></p>
+                        <p class="person" ng-if="msg.dispatch == 0"><small  ><i class="fa fa-user"></i> אזרח</small></p>
+                        <div class="the-msg">
+                            <p>{{ msg.msg }}</p>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+            <div class="footer">
+                <form>
+                    <div class="input">
+                        <textarea placeholder="השב" class="form-control" ng-model="message"></textarea>
+                    </div>
+                    <div class="btns">
+                        <button class="btn btn-block btn-info" ng-click="sendMsg()" >שלח</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?language=he"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="js/jwplayer/jwplayer.js"></script>
+<script src="js/app.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
+<script src="libs/bower_components/angular-scroll-glue/src/scrollglue.js"></script>
+<script src="libs/bower_components/lodash/dist/lodash.min.js"></script>
+<script src="libs/bower_components/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
+<script src="libs/bower_components/angular-google-maps/dist/angular-google-maps.min.js"></script>
+<script src="js/baware.js"></script>
+</body>
+</html>
+
