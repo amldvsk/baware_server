@@ -1,7 +1,8 @@
 var express = require('express'),
     router = express.Router(),
     Service = require('../models/service');
-    User = require('../models/user');
+    User = require('../models/user'),
+    ObjectId = require('mongodb').ObjectID;
 
 router.get('/', function(req, res) {
     res.send('api is working');
@@ -16,6 +17,18 @@ router.get('/get-services', function(req, res) {
             res.send(err)
 
         res.json(services); // return all todos in JSON format
+    });
+});
+
+
+router.get('/get-dept-data/:id', function(req, res) {
+    Service.findOne({ "_id": new ObjectId(req.params.id) },function(err, servie) {
+
+        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+        if (err)
+            res.send(err)
+
+        res.json(servie); // return all todos in JSON format
     });
 });
 

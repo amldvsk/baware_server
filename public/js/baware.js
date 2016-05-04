@@ -45,6 +45,14 @@ function BawareService($http) {
         });
     }
 
+    function getDeptData(id) {
+        return $http({
+            method: 'GET',
+            url: 'api/get-dept-data/'+id,
+            headers: { 'Content-Type' : 'application/x-www-form-urlencoded' }
+        });
+    }
+
     function getAddressFromCoor(lat, lon) {
         return $http({
             method: 'GET',
@@ -67,6 +75,7 @@ function BawareService($http) {
 
     return {
         getServices : getServices,
+        getDeptData : getDeptData,
         getAddressFromCoor : getAddressFromCoor,
         insertNewService : insertNewService,
     }
@@ -133,6 +142,10 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
         $rootScope.dept = 'מכבי אש';
     }
 
+
+    BawareService.getDeptData(deptId).then(function(result) {
+        $rootScope.dept += ' - '+result.data.name;
+    });
 
     $scope.map = { center: { latitude: 31.220414, longitude: 34.802358 }, zoom: 10 };
 

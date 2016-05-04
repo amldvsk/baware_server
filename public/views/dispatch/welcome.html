@@ -35,7 +35,7 @@
     <div class="col-md-8">
         <div class="col-sm-3">
             <ul class="list-unstyled">
-                <li><h5>משטרה</h5></li>
+                <li><h5><strong>משטרה</strong></h5></li>
                 <li ng-repeat="n in services.police" >
                     <a ui-sref="dept({ dept : n.eSType, id: n._id })">{{ n.name }}</a>
                 </li>
@@ -46,7 +46,7 @@
 
         <div class="col-sm-3">
             <ul class="list-unstyled">
-                <li><h5>מד״א</h5></li>
+                <li><h5><strong>מגן דוד אדום</strong></h5></li>
                 <li ng-repeat="n in services.medical" >
                     <a ui-sref="dept({ dept : n.eSType, id: n._id })">{{ n.name }}</a>
                 </li>
@@ -57,7 +57,7 @@
 
         <div class="col-sm-3">
             <ul class="list-unstyled">
-                <li><h5>מכבי אש</h5></li>
+                <li><h5><strong>מכבי אש</strong></h5></li>
                 <li ng-repeat="n in services.fire" >
                     <a ui-sref="dept({ dept : n.eSType, id: n._id })">{{ n.name }}</a>
                 </li>
