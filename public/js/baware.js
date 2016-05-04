@@ -31,18 +31,108 @@ app.config(function($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvid
 });
 
 
-app.controller('MainController', ['$scope' ,MainController]);
-app.controller('DispatchController', ['$scope' , '$timeout', '$http',DispatchController]);
+app.controller('MainController', ['$scope' , 'BawareService', '$rootScope',MainController]);
+app.controller('DispatchController', ['$scope' , '$timeout', 'BawareService' , '$stateParams' , '$rootScope' ,DispatchController]);
+app.factory('BawareService', ['$http' ,BawareService])
+
+function BawareService($http) {
+
+    function getServices() {
+        return $http({
+            method: 'GET',
+            url: 'api/get-services',
+            headers: { 'Content-Type' : 'application/x-www-form-urlencoded' }
+        });
+    }
+
+    function getAddressFromCoor(lat, lon) {
+        return $http({
+            method: 'GET',
+            url: 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+lon+'&sensor=false&language=he',
+            headers: { 'Content-Type' : 'application/x-www-form-urlencoded' }
+        });
+    }
+
+
+    function insertNewService(data) {
+        return $http({
+            method: 'POST',
+            url: 'api/insert-service',
+            data:$.param(data),
+            headers: { 'Content-Type' : 'application/x-www-form-urlencoded' },
+        });
+    }
 
 
 
-function MainController($scope) {
-        console.log('MainController');
+    return {
+        getServices : getServices,
+        getAddressFromCoor : getAddressFromCoor,
+        insertNewService : insertNewService,
+    }
+}
+
+function MainController($scope, BawareService, $rootScope) {
+    console.log('MainController');
+
+    $rootScope.dept = undefined;
+    $scope.newService = {};
+    var ser;
+    BawareService.getServices().then(function(result) {
+        ser = result.data;
+        pushData();
+
+
+    });
+
+    function pushData() {
+        $scope.services = {
+            police : [],
+            medical : [],
+            fire : [],
+        };
+        for(var i = 0; i < ser.length; i++) {
+            if( ser[i].eSType == 1 ) {
+                $scope.services.police.push(ser[i]);
+            } else if( ser[i].eSType == 2 ) {
+                $scope.services.medical.push(ser[i]);
+            } else {
+                $scope.services.fire.push(ser[i]);
+            }
+        }
+    }
+
+    $scope.submitForm = function(valid) {
+        if(!valid) return;
+
+        BawareService.insertNewService($scope.newService).then(function(result) {
+            console.log(result);
+            ser = result.data;
+            pushData();
+            $scope.newService = {};
+        });
+
+    }
 
 }
 
-function DispatchController($scope, $timeout, $http) {
+function DispatchController($scope, $timeout, BawareService, $stateParams, $rootScope) {
     console.log('DispatchController');
+
+
+    var dept = $stateParams.dept;
+    var deptId = $stateParams.id;
+
+    $rootScope.dept = '';
+
+    if( dept == 1 ) {
+        $rootScope.dept = 'משטרה';
+    } else if( dept == 2 ) {
+        $rootScope.dept = 'מגן דוד אדום';
+    } else {
+        $rootScope.dept = 'מכבי אש';
+    }
+
 
     $scope.map = { center: { latitude: 31.220414, longitude: 34.802358 }, zoom: 10 };
 
@@ -114,19 +204,22 @@ function DispatchController($scope, $timeout, $http) {
                     labelAnchor: "100 0",
                     labelClass: "marker-labels"
                 };
+            },
+            click : function( marker, eventName, args ) {
+                console.log(marker);
             }
         }
     };
     $timeout(function() {
+        $scope.videoActive = true;
         $scope.markers.push(marker);
         $scope.map = { center: { latitude: 31.253168, longitude: 34.789222 }, zoom: 16 };
         getAddress(31.253168, 34.789222);
-        $scope.videoActive = true;
     }, 5000);
 
 
     function getAddress(lat, lon) {
-        $http.get('http://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+lon+'&sensor=false&language=he').then(function(result) {
+        BawareService.getAddressFromCoor(lat, lon).then(function(result) {
             $scope.msgs.push( { dispatch : 0, msg : ' קריאה חדשה נכנסת מ '+result.data.results[0].formatted_address });
             $scope.calls.push( { id : 1,location : { lat : lat, lng : lon, address : result.data.results[0].formatted_address } } );
         });

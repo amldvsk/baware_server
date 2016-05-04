@@ -1,35 +1,70 @@
 <div class="dept-list clearfix" >
 
-    <div class="col-md-3">
-        <ul class="list-unstyled">
-
-            <li ng-repeat="n in [1,2,3,4,5,6,7,8,9,10]" >
-                <a ui-sref="dept({ dept : 'police', id: n })">תחנת משטרה {{ n }}</a>
-            </li>
-
-
-        </ul>
+    <div class="col-md-4">
+        <div class="form well">
+            <form novalidate ng-submit="submitForm(insertService.$valid)" name="insertService">
+                <div class="form-group" ng-class="{ 'has-error' : insertService.type.$invalid && !insertService.type.$pristine }">
+                    <label>סוג השירות</label>
+                    <select name="type" id="" ng-model="newService.type" required class="form-control">
+                        <option value="1">משטרה</option>
+                        <option value="2">מגן דוד אדום</option>
+                        <option value="3">מכבי אש</option>
+                    </select>
+                    <p ng-show="insertService.type.$invalid && !insertService.type.$pristine" class="help-block">שדה חובה.</p>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : insertService.name.$invalid && !insertService.name.$pristine }">
+                    <label>שם התחנה</label>
+                    <input type="text" name="name" ng-model="newService.name" class="form-control" required placeholder="שם התחנה">
+                    <p ng-show="insertService.name.$invalid && !insertService.name.$pristine" class="help-block">שדה חובה.</p>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : insertService.lat.$invalid && !insertService.lat.$pristine }">
+                    <label>מיקום</label>
+                    <input type="text" name="lat" ng-model="newService.lat" class="form-control" required placeholder="אורך">
+                    <p ng-show="insertService.lat.$invalid && !insertService.lat.$pristine" class="help-block">שדה חובה.</p>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : insertService.long.$invalid && !insertService.long.$pristine }">
+                    <input type="text" name="long" ng-model="newService.long" class="form-control" required placeholder="רוחב">
+                    <p ng-show="insertService.long.$invalid && !insertService.long.$pristine" class="help-block">שדה חובה.</p>
+                </div>
+                <button class="btn btn-info" ng-disabled="insertService.$invalid">הוסף</button>
+            </form>
+        </div>
     </div>
 
-    <div class="col-md-3">
-        <ul class="list-unstyled">
+    <div class="col-md-8">
+        <div class="col-sm-3">
+            <ul class="list-unstyled">
+                <li><h5>משטרה</h5></li>
+                <li ng-repeat="n in services.police" >
+                    <a ui-sref="dept({ dept : n.eSType, id: n._id })">{{ n.name }}</a>
+                </li>
 
-            <li ng-repeat="n in [1,2,3,4,5,6,7,8,9,10]" >
-                <a ui-sref="dept({ dept : 'fire', id: n })">כיבוי אש {{ n }}</a>
-            </li>
+
+            </ul>
+        </div>
+
+        <div class="col-sm-3">
+            <ul class="list-unstyled">
+                <li><h5>מד״א</h5></li>
+                <li ng-repeat="n in services.medical" >
+                    <a ui-sref="dept({ dept : n.eSType, id: n._id })">{{ n.name }}</a>
+                </li>
 
 
-        </ul>
+            </ul>
+        </div>
+
+        <div class="col-sm-3">
+            <ul class="list-unstyled">
+                <li><h5>מכבי אש</h5></li>
+                <li ng-repeat="n in services.fire" >
+                    <a ui-sref="dept({ dept : n.eSType, id: n._id })">{{ n.name }}</a>
+                </li>
+
+
+            </ul>
+        </div>
     </div>
 
-    <div class="col-md-3">
-        <ul class="list-unstyled">
 
-            <li ng-repeat="n in [1,2,3,4,5,6,7,8,9,10]" >
-                <a ui-sref="dept({ dept : 'medical', id: n })">מד״א {{ n }}</a>
-            </li>
-
-
-        </ul>
-    </div>
 </div>

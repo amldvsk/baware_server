@@ -2,12 +2,13 @@
 <div class="row-wapper">
     <div class="map">
         <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-            <ui-gmap-marker ng-repeat="marker in markers" coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
+            <ui-gmap-marker ng-repeat="marker in markers" coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id" click="marker.click">
             </ui-gmap-marker>
         </ui-gmap-google-map>
     </div>
-    <div class="video" ng-show="videoActive">
-        <div id="player"></div>
+    <div class="video" >
+        <div id="player" ng-show="videoActive"></div>
+        <h4 class="text-center" ng-show="!videoActive">אין וידאו</h4>
     </div>
 </div>
 <div class="row-wapper">

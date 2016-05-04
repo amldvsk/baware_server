@@ -220,6 +220,13 @@ nav .logo img {
 	width: auto;
 }
 
+
+nav h4 {
+	padding: 10px 20px;
+	margin: 0;
+	color: #fff;
+}
+
 .main {
 	width: 100%;
 	height: 100%;
@@ -439,7 +446,7 @@ nav .logo img {
 }
 
 
-form {
+.chat .footer form {
 	display: -webkit-flex; /* Safari */
 	display: flex;
 	-webkit-flex-direction: row; /* Safari */
@@ -451,7 +458,7 @@ form {
 	height: 100%;
 }
 
-form > div {
+.chat .footer form > div {
 	display: flex;
 }
 

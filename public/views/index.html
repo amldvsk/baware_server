@@ -10,8 +10,11 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body lang="he" dir="rtl" ng-cloak >
-<nav>
-    <div class="logo"><a ui-sref="/"><img src="img/logo.svg"></a></div>
+<nav clas="clearfix">
+    <div class="container-fluid clearfix">
+        <div class="logo pull-right"><a ui-sref="/"><img src="img/logo.svg"></a></div>
+        <h4 class="pull-right" ng-show="dept">{{ dept }}</h4>
+    </div>
 </nav>
 <div class="main" ui-view>
 

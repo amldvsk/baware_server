@@ -8,6 +8,7 @@ var serviceSchema = new Schema({
         lat: { type: Number, required: true },
         lon: { type: Number, required: true },
     },
+    name : String,
     eSType : Number,
     created_at: Date,
     updated_at: Date
