@@ -145,9 +145,16 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
 
     BawareService.getDeptData(deptId).then(function(result) {
         $rootScope.dept += ' - '+result.data.name;
+
+        var lat = result.data.location.lat;
+        var lon = result.data.location.lon;
+
+
+        $scope.map = { center: { latitude: (lat), longitude: (lon) }, zoom: 10 };
+
     });
 
-    $scope.map = { center: { latitude: 31.220414, longitude: 34.802358 }, zoom: 10 };
+
 
     $scope.calls = [
         { id : 1,location : { lat : 54, lng : 56, address : '' } },
