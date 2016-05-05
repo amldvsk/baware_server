@@ -34,6 +34,11 @@ app.config(function($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvid
 app.controller('MainController', ['$scope' , 'BawareService', '$rootScope',MainController]);
 app.controller('DispatchController', ['$scope' , '$timeout', 'BawareService' , '$stateParams' , '$rootScope' ,DispatchController]);
 app.factory('BawareService', ['$http' ,BawareService])
+app.filter('unsafe', ['$sce', function($sce){
+    return function(text) {
+        return $sce.trustAsHtml(text);
+    };
+}]);
 
 function BawareService($http) {
 
@@ -156,39 +161,10 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
 
 
 
-    $scope.calls = [
-        { id : 1,location : { lat : 54, lng : 56, address : '' } },
-        { id : 2,location : { lat : 54, lng : 56 } },
-        { id : 3,location : { lat : 54, lng : 56 } },
-        { id : 4,location : { lat : 54, lng : 56 } },
-        { id : 5,location : { lat : 54, lng : 56 } },
-        { id : 6,location : { lat : 54, lng : 56 } },
-        { id : 7,location : { lat : 54, lng : 56 } },
-        { id : 8,location : { lat : 54, lng : 56 } },
-        { id : 9,location : { lat : 54, lng : 56 } },
-        { id : 10,location : { lat : 54, lng : 56 } },
-        { id : 11,location : { lat : 54, lng : 56 } },
-        { id : 12,location : { lat : 54, lng : 56 } },
-    ];
+    $scope.calls = [];
 
 
-    $scope.msgs = [
-        { dispatch : 0, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 0, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 1, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 0, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 1, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 1, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 1, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 0, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 0, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 1, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 0, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 1, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 0, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 0, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-        { dispatch : 1, msg : 'adasasdasdasd sa das das das das das a sd asd as dasd asdas dasd ' },
-    ];
+    $scope.msgs = [];
 
 
     $scope.sendMsg = function() {
@@ -196,7 +172,7 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
             return;
         }
 
-        $scope.msgs.push( { dispatch : 1, msg : $scope.message.trim() });
+        $scope.msgs.push( { dispatch : 1, msg : $scope.message.trim(), time : new Date() });
         $scope.message = undefined;
     }
 
@@ -209,24 +185,21 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
             latitude: 31.253168,
             longitude: 34.789222
         },
-        options: { draggable: true },
+        options: { draggable: false },
         events: {
-            dragend: function (marker, eventName, args) {
-                $log.log('marker dragend');
+            // dragend: function (marker, eventName, args) {
+            //
+            // },
+            click : function( marker, eventName, args ) {
+                console.log(marker);
                 var lat = marker.getPosition().lat();
                 var lon = marker.getPosition().lng();
-                $log.log(lat);
-                $log.log(lon);
-
-                $scope.marker.options = {
-                    draggable: true,
-                    labelContent: "lat: " + $scope.marker.coords.latitude + ' ' + 'lon: ' + $scope.marker.coords.longitude,
+                marker.options = {
+                    draggable: false,
+                    labelContent: "lat: " + lat + ' ' + 'lon: ' + lon,
                     labelAnchor: "100 0",
                     labelClass: "marker-labels"
                 };
-            },
-            click : function( marker, eventName, args ) {
-                console.log(marker);
             }
         }
     };
@@ -234,15 +207,59 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
         $scope.videoActive = true;
         $scope.markers.push(marker);
         $scope.map = { center: { latitude: 31.253168, longitude: 34.789222 }, zoom: 16 };
-        getAddress(31.253168, 34.789222);
+        getAddress(31.253168, 34.789222, marker);
+        startPlayer();
     }, 5000);
 
 
-    function getAddress(lat, lon) {
+    function getAddress(lat, lon, marker) {
         BawareService.getAddressFromCoor(lat, lon).then(function(result) {
-            $scope.msgs.push( { dispatch : 0, msg : ' קריאה חדשה נכנסת מ '+result.data.results[0].formatted_address });
-            $scope.calls.push( { id : 1,location : { lat : lat, lng : lon, address : result.data.results[0].formatted_address } } );
+            $scope.msgs.push( { dispatch : 0, msg : ' קריאה חדשה נכנסת מ '+'<strong>'+result.data.results[0].formatted_address+'</strong>', time : new Date() });
+            $scope.calls.push( { id : 1,location : { lat : lat, lng : lon, address : result.data.results[0].formatted_address, marker : marker } } );
         });
+    }
+
+
+    $scope.focusOnMarker = function(call) {
+        $scope.map = { center: { latitude: call.location.lat, longitude: call.location.lng }, zoom: 16 };
+    }
+
+
+    $scope.action = function(type) {
+
+        if( type == 1 ) {
+            $scope.msgs.push( { dispatch : 1, msg : 'כוחות הצלה בדרך אליך' , time : new Date()});
+        }
+
+    }
+
+
+
+    var h = ( $(window).height() / 2 );
+    var jw_width = 640, jw_height = h;
+    jwplayer.key = "D1v8Fw6eKkzR6cKxgcciMrRu5JJVMgFNOuwgjg=="
+    function startPlayer(id) {
+        jwplayer('player').setup({
+            height: jw_height,
+            width: jw_width,
+            stretching: 'exactfit',
+            sources: [{
+                file: 'rtmp://37.139.20.85:1935/live/'+id
+            }],
+            rtmp: {
+                bufferlength: 3
+            }
+        });
+
+        jwplayer("player").onMeta(function(event) {
+            var info = "";
+            for (var key in data) {
+                info += key + " = " + data[key] + "<BR>";
+            }
+            // print("event", event);
+        });
+
+        jwplayer('player').play();
     }
 
 

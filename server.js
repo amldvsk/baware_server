@@ -2,9 +2,18 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser')
     morgan = require('morgan')
-    path = require('path');
+    path = require('path'),
+    Pusher = require('pusher');
+
 
 mongoose = mongoose.connect('mongodb://localhost/baware');
+
+var pusher = new Pusher({
+    appId: '203852',
+    key: '6b3104cb0a227abfa674',
+    secret: 'f75449ab79492cdc97e6',
+    encrypted: true
+});
 
 var app = express();
 

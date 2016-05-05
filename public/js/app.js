@@ -2,15 +2,15 @@
 
 
 
-jwplayer.key = "D1v8Fw6eKkzR6cKxgcciMrRu5JJVMgFNOuwgjg=="
+
 var map;
 var data = [];
+
+
+var markers = [];
 var h = ( $(window).height() / 2 );
 var jw_width = 640, jw_height = h;
-var markers = [];
-
-
-
+jwplayer.key = "D1v8Fw6eKkzR6cKxgcciMrRu5JJVMgFNOuwgjg=="
 function startPlayer(id) {
     jwplayer('player').setup({
         height: jw_height,
