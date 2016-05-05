@@ -205,17 +205,51 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
     };
     $timeout(function() {
         $scope.videoActive = true;
+        var marker2 = {
+            id: 0,
+            coords: {
+                latitude: 31.285541,
+                longitude: 34.801177
+            },
+            options: { draggable: false },
+            events: {
+                // dragend: function (marker, eventName, args) {
+                //
+                // },
+                click : function( marker, eventName, args ) {
+                    console.log(marker);
+                    var lat = marker.getPosition().lat();
+                    var lon = marker.getPosition().lng();
+                    marker.options = {
+                        draggable: false,
+                        labelContent: "lat: " + lat + ' ' + 'lon: ' + lon,
+                        labelAnchor: "100 0",
+                        labelClass: "marker-labels"
+                    };
+                }
+            }
+        };
+        $scope.markers.push(marker2);
+        $scope.map = { center: { latitude: 31.285541, longitude: 34.801177 }, zoom: 16 };
+        getAddress(31.285541, 34.801177, marker2);
+        startPlayer();
+    }, 5000);
+
+
+
+    $timeout(function() {
+        $scope.videoActive = true;
         $scope.markers.push(marker);
         $scope.map = { center: { latitude: 31.253168, longitude: 34.789222 }, zoom: 16 };
         getAddress(31.253168, 34.789222, marker);
         startPlayer();
-    }, 5000);
+    }, 10000);
 
 
     function getAddress(lat, lon, marker) {
         BawareService.getAddressFromCoor(lat, lon).then(function(result) {
             $scope.msgs.push( { dispatch : 0, msg : ' קריאה חדשה נכנסת מ '+'<strong>'+result.data.results[0].formatted_address+'</strong>', time : new Date() });
-            $scope.calls.push( { id : 1,location : { lat : lat, lng : lon, address : result.data.results[0].formatted_address, marker : marker } } );
+            $scope.calls.unshift( { id : 1,location : { lat : lat, lng : lon, address : result.data.results[0].formatted_address, marker : marker } } );
         });
     }
 

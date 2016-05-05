@@ -335,6 +335,7 @@ nav h4 {
 .calls .list-view li {
 	padding: 15px 10px;
 	border-bottom: 1px solid #eee;
+	cursor: pointer;
 }
 
 
