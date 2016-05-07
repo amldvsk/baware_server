@@ -77,12 +77,33 @@ function BawareService($http) {
     }
 
 
+    function getReportLog(id) {
+        return $http({
+            method: 'GET',
+            url: 'api/get-report-log/'+id,
+            headers: { 'Content-Type' : 'application/x-www-form-urlencoded' }
+        });
+    }
+
+
+    function endReport(data) {
+        return $http({
+            method: 'POST',
+            url: 'api/end-report',
+            data:$.param(data),
+            headers: { 'Content-Type' : 'application/x-www-form-urlencoded' },
+        });
+    }
+
+
 
     return {
         getServices : getServices,
         getDeptData : getDeptData,
         getAddressFromCoor : getAddressFromCoor,
         insertNewService : insertNewService,
+        getReportLog : getReportLog,
+        endReport : endReport,
     }
 }
 
@@ -136,7 +157,9 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
 
     var dept = $stateParams.dept;
     var deptId = $stateParams.id;
-
+    var socket = null;
+    var currentUser = null;
+    var currentReport = null;
     $rootScope.dept = '';
 
     if( dept == 1 ) {
@@ -151,19 +174,62 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
     BawareService.getDeptData(deptId).then(function(result) {
         $rootScope.dept += ' - '+result.data.name;
 
-        var lat = result.data.location.lat;
-        var lon = result.data.location.lon;
+        var lat = result.data.loc[1];
+        var lon = result.data.loc[0];
 
 
         $scope.map = { center: { latitude: (lat), longitude: (lon) }, zoom: 10 };
 
+        for(var i = 0; i < result.data.reports.length; i++) {
+            result.data.reports[i].newMsg = false;
+            addNewCall(result.data.reports[i]);
+        }
+        //$scope.calls = result.data.reports;
+
     });
+
+    connectToSocket();
+
+    function connectToSocket() {
+
+        var deptArr =  ['police', 'fire', 'medical'];
+
+        socket = io.connect(window.location.host+'/'+deptArr[dept-1]);
+
+        socket.emit('dispatchJoind', { dispatchId :  deptId });
+
+        socket.on('newCall', function(call) {
+            console.log(call);
+            call.report.newMsg = true;
+            addNewCall(call.report);
+        });
+
+
+        socket.on('message', function(msg) {
+            if( msg.report == currentReport ) {
+                var ms = { dispatch : msg.dispatch, msg : msg.msg, time : msg.created_at };
+                $scope.$apply(function() {
+                    $scope.msgs.push( ms );
+                });
+            } else {
+
+
+                for(var i = 0 ; i < $scope.calls.length; i++) {
+                    if( $scope.calls[i].report._id == msg.report ) {
+                        $scope.calls[i].newMsg = true;
+                    }
+                }
+
+            }
+
+
+        });
+    }
+
 
 
 
     $scope.calls = [];
-
-
     $scope.msgs = [];
 
 
@@ -172,50 +238,26 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
             return;
         }
 
-        $scope.msgs.push( { dispatch : 1, msg : $scope.message.trim(), time : new Date() });
+        // $scope.msgs.push( { dispatch : 1, msg : $scope.message.trim(), time : new Date() });
+        var msg = { dispatch : true, msg : $scope.message.trim(), report : currentReport, dispatchId : deptId }
+        socket.emit('message', msg);
         $scope.message = undefined;
     }
 
 
 
     $scope.markers = [];
-    var marker = {
-        id: 0,
-        coords: {
-            latitude: 31.253168,
-            longitude: 34.789222
-        },
-        options: { draggable: false },
-        events: {
-            // dragend: function (marker, eventName, args) {
-            //
-            // },
-            click : function( marker, eventName, args ) {
-                console.log(marker);
-                var lat = marker.getPosition().lat();
-                var lon = marker.getPosition().lng();
-                marker.options = {
-                    draggable: false,
-                    labelContent: "lat: " + lat + ' ' + 'lon: ' + lon,
-                    labelAnchor: "100 0",
-                    labelClass: "marker-labels"
-                };
-            }
-        }
-    };
-    $timeout(function() {
+    function addNewCall(data) {
+        // console.log(data);
         $scope.videoActive = true;
-        var marker2 = {
+        var marker = {
             id: 0,
             coords: {
-                latitude: 31.285541,
-                longitude: 34.801177
+                latitude: data.user.loc[1],
+                longitude: data.user.loc[0]
             },
             options: { draggable: false },
             events: {
-                // dragend: function (marker, eventName, args) {
-                //
-                // },
                 click : function( marker, eventName, args ) {
                     console.log(marker);
                     var lat = marker.getPosition().lat();
@@ -229,41 +271,72 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
                 }
             }
         };
-        $scope.markers.push(marker2);
-        $scope.map = { center: { latitude: 31.285541, longitude: 34.801177 }, zoom: 16 };
-        getAddress(31.285541, 34.801177, marker2);
-        startPlayer();
-    }, 5000);
-
-
-
-    $timeout(function() {
-        $scope.videoActive = true;
         $scope.markers.push(marker);
-        $scope.map = { center: { latitude: 31.253168, longitude: 34.789222 }, zoom: 16 };
-        getAddress(31.253168, 34.789222, marker);
+        $scope.map = { center: { latitude: data.user.loc[1], longitude: data.user.loc[0] }, zoom: 16 };
+
+
+        getAddress(data, data.user.loc[1], data.user.loc[0], marker);
+
+
         startPlayer();
-    }, 10000);
+    }
 
 
-    function getAddress(lat, lon, marker) {
+
+    function getAddress(data, lat, lon, marker) {
         BawareService.getAddressFromCoor(lat, lon).then(function(result) {
-            $scope.msgs.push( { dispatch : 0, msg : ' קריאה חדשה נכנסת מ '+'<strong>'+result.data.results[0].formatted_address+'</strong>', time : new Date() });
-            $scope.calls.unshift( { id : 1,location : { lat : lat, lng : lon, address : result.data.results[0].formatted_address, marker : marker } } );
+            //$scope.msgs.push( { dispatch : 0, msg : data.report.msg, time : data.report.created_at });
+            $scope.calls.unshift( { id : 1,location : { lat : data.user.loc[1], lng : data.user.loc[0], address : result.data.results[0].formatted_address, marker : marker } , report : data, newMsg : data.newMsg } );
         });
     }
 
 
+
+
     $scope.focusOnMarker = function(call) {
+        call.newMsg = false;
+
         $scope.map = { center: { latitude: call.location.lat, longitude: call.location.lng }, zoom: 16 };
+        currentUser = call.report.user._id;
+        currentReport = call.report._id;
+        if( call.report.handle == 0 )
+            socket.emit('connectedToUser', { user : currentUser, dispatch : deptId, report : currentReport });
+        if( call.report.handle != 2 )
+            call.report.handle = 1;
+        BawareService.getReportLog(call.report._id).then(function(result) {
+            $scope.msgs = [];
+
+            for(var i = 0; i < result.data.length; i++) {
+                $scope.msgs.unshift( { dispatch : result.data[i].dispatch, msg : result.data[i].msg, time : result.data[i].created_at });
+            }
+
+
+        });
+
     }
 
 
     $scope.action = function(type) {
 
         if( type == 1 ) {
-            $scope.msgs.push( { dispatch : 1, msg : 'כוחות הצלה בדרך אליך' , time : new Date()});
+            var msg = { dispatch : true,  msg : 'כוחות הצלה בדרך אליך', report : currentReport, dispatchId : deptId, type : type }
+            socket.emit('message', msg);
         }
+
+        if( type == 3 ) {
+            var msg = { dispatch : true,  msg : 'האירוע הסתיים', report : currentReport, dispatchId : deptId, type : type }
+            socket.emit('message', msg);
+
+            BawareService.endReport({ report : currentReport }).then(function(result) {
+                for(var i = 0 ; i < $scope.calls.length; i++) {
+                    if( $scope.calls[i].report._id == msg.report ) {
+                        $scope.calls[i].report.handle = 2;
+                    }
+                }
+            });
+
+        }
+
 
     }
 

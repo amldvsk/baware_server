@@ -16,16 +16,18 @@
         <div class="header">
             <h4>קריאות</h4>
         </div>
-        <ul class="list-unstyled list-view" scroll-glue>
-            <li class="clearfix">
-                <div class="col-md-4"><p><strong>מזהה</strong></p></div>
-                <div class="col-md-8"><p><strong>מיקום</strong></p></div>
-            </li>
-            <li ng-repeat="call in calls" class="clearfix" ng-click="focusOnMarker(call)">
-                <div class="col-md-4"><p>{{ call.id }}</p></div>
-                <div class="col-md-4"><p>{{ call.location.address }}</p></div>
-                <div class="col-md-2"><p>{{ call.location.lng }}</p></div>
-                <div class="col-md-2"><p>{{ call.location.lng }}</p></div>
+        <ul class="list-view list-unstyled clearfix">
+            <li class="clearfix" ng-repeat="call in calls" ng-click="focusOnMarker(call)">
+                <p>{{ call.report._id }}</p>
+                <p>{{ call.location.address }}</p>
+                <p>{{ call.location.lat }}</p>
+                <p>{{ call.location.lng }}</p>
+                <p>
+                    <span class="handle blink" ng-show="call.report.handle == 0 || call.newMsg"><i class="fa fa-circle" aria-hidden="true"></i></span>
+                    <span class="handle warning"  ng-show="call.report.handle == 1 && !call.newMsg" ><i class="fa fa-circle" aria-hidden="true"></i></span>
+                    <span class="handle ended"  ng-show="call.report.handle == 2 && !call.newMsg" ><i class="fa fa-circle" aria-hidden="true"></i></span>
+                </p>
+                <p>{{ call.report.created_at | date:"dd/MM/yyyy 'ב' h:mma"  }}</p>
             </li>
         </ul>
     </div>
@@ -33,15 +35,16 @@
         <div class="header clearfix">
             <h4 class="pull-right" >שיחה עם</h4>
             <div class="btn-group pull-left" role="group" aria-label="...">
-                <button type="button" class="btn btn-default" ng-click="action(1)">כוחות בדרך</button>
-                <button type="button" class="btn btn-default" ng-click="action(2)">עדכן מיקום</button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="action(1)">כוחות בדרך</button>
+                <button type="button" class="btn btn-default btn-sm hidden" ng-click="action(2)">עדכן מיקום</button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="action(3)">האירוע הסתיים</button>
             </div>
         </div>
         <ul class="list-unstyled chat-view clearfix " scroll-glue>
             <li class="clearfix" ng-repeat="msg in msgs">
-                <div class="message" ng-class="{ user : msg.dispatch == 0 }">
-                    <p class="person" ng-if="msg.dispatch == 1" ><small ><i class="fa fa-headphones"></i> מוקד</small></p>
-                    <p class="person" ng-if="msg.dispatch == 0"><small  ><i class="fa fa-user"></i> אזרח</small></p>
+                <div class="message" ng-class="{ user : msg.dispatch == false }">
+                    <p class="person" ng-if="msg.dispatch == true" ><small ><i class="fa fa-headphones"></i> מוקד</small></p>
+                    <p class="person" ng-if="msg.dispatch == false"><small  ><i class="fa fa-user"></i> אזרח</small></p>
                     <div class="the-msg">
                         <p ng-bind-html="msg.msg | unsafe" ></p>
                     </div>

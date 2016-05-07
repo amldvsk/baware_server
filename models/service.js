@@ -4,9 +4,13 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var serviceSchema = new Schema({
-    location: {
-        lat: { type: Number, required: true },
-        lon: { type: Number, required: true },
+    // location: {
+    //     lat: { type: Number, required: true },
+    //     lon: { type: Number, required: true },
+    // },
+    loc: {
+        type: [Number],  // [<longitude>, <latitude>]
+        index: '2dsphere'      // create the geospatial index
     },
     name : String,
     eSType : Number,
@@ -29,6 +33,22 @@ serviceSchema.pre('save', function(next) {
 
     next();
 });
+
+
+serviceSchema.statics.findNearest = function (type, coords, cb) {
+    // return this.find({ name: new RegExp(name, 'i') }, cb);
+
+    return this.find({
+        loc: {
+            $near: coords,
+        },
+        eSType : type
+    }, cb);
+}
+
+
+
+
 
 // the schema is useless so far
 // we need to create a model using it

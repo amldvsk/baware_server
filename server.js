@@ -3,7 +3,11 @@ var express = require('express'),
     bodyParser = require('body-parser')
     morgan = require('morgan')
     path = require('path'),
-    Pusher = require('pusher');
+    Pusher = require('pusher'),
+    EServcies = require('./models/service'),
+    Report = require('./models/report'),
+    ReportLog = require('./models/reportLog'),
+    User = require('./models/user');
 
 
 mongoose = mongoose.connect('mongodb://localhost/baware');
@@ -64,6 +68,11 @@ app.get('*', function(req, res) {
     res.sendfile('./public/views/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
+
+// EServcies.findNearest( 1, [34.801050, 31.285517] , function(err, locations) {
+//     console.log(locations);
+// });
+
 var io = require('socket.io').listen(app.listen(3000, '0.0.0.0', function() {
     console.log('Listening to port:  ' + 3000);
 }));
@@ -71,32 +80,127 @@ var io = require('socket.io').listen(app.listen(3000, '0.0.0.0', function() {
 
 var users = [];
 
-io.on('connection', function(socket){
-    console.log('a user connected');
+var policeNsp = io.of('/police');
+var fireNsp = io.of('/fire');
+var medicalNsp = io.of('/medical');
+
+policeNsp.on('connection', function(socket){
+    //console.log('user connected to the police');
 
 
     socket.on('disconnect', function() {
         console.log('user disconnected');
 
         var user = users[socket.id];
-        io.emit('connectionClosed', user);
+        policeNsp.emit('connectionClosed', user);
     });
 
     socket.on('connectToService', function(msg) {
-        console.log('connectToService');
+        console.log('new user connected to police');
+        EServcies.findNearest( 1, [msg.long, msg.lat] , function(err, locations) {
+
+            var testUser = { phoneId : msg.phoneId, lat: msg.lat, log: msg.long, service : locations[0]._id }
+
+            User.addNewUser(testUser, function(user) {
+                socket.join(user.report._id);
+                policeNsp.to(user.report._id).emit('reportCreated', {report : user.report._id});
+                policeNsp.to(locations[0]._id).emit('newCall', user);
+            });
+        })
+    })
+
+
+
+    socket.on('connectedToUser', function(msg) {
+        console.log('now dispatch is connected to user');
         console.log(msg);
-        io.emit('new', msg);
+        socket.join(msg.report);
+        log = new ReportLog();
+        log.report = msg.report;
+        log.dispatch = true;
+        log.msg = 'נוצר חיבור';
+        log.save(function(err) {
+            if(err) {
+                console.log(err)
+            } else {
+                policeNsp.to(msg.report).emit('message', log);
+            }
+        });
+
+    })
+
+    socket.on('message', function(msg) {
+
+
+        log = new ReportLog();
+        log.report = msg.report;
+        log.dispatch = msg.dispatch;
+        log.msg = msg.msg;
+        console.log(msg);
+        log.save(function(err) {
+            if(err) {
+                console.log(err)
+            } else {
+                policeNsp.to(msg.report).emit('message', log);
+            }
+        });
+    });
+
+
+    socket.on('dispatchJoind', function(msg) {
+        socket.join(msg.dispatchId);
+    });
+
+});
+
+
+fireNsp.on('connection', function(socket){
+    console.log('user connected to the fireDp');
+
+
+    socket.on('disconnect', function() {
+        console.log('user disconnected');
+
+        var user = users[socket.id];
+        policeNsp.emit('connectionClosed', user);
+    });
+
+    socket.on('connectToService', function(msg) {
+        console.log('connected to fireDp');
+        console.log(msg);
+        policeNsp.emit('new', msg);
         users[socket.id] = msg.userId;
     })
 
 
     socket.on('message', function(msg) {
-        io.emit('message', msg);
+        policeNsp.emit('message', msg);
     });
 
+});
+
+medicalNsp.on('connection', function(socket){
+    console.log('user connected to the medical');
 
 
+    socket.on('disconnect', function() {
+        console.log('user disconnected');
 
+        var user = users[socket.id];
+        policeNsp.emit('connectionClosed', user);
+    });
+
+    socket.on('connectToService', function(msg) {
+        console.log('connected to medical');
+        console.log(msg);
+        policeNsp.emit('new', msg);
+        users[socket.id] = msg.userId;
+    })
+
+
+    socket.on('message', function(msg) {
+        policeNsp.emit('message', msg);
+    });
 
 });
 

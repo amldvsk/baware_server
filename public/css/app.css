@@ -188,6 +188,7 @@ body, html {
 	height: 100%;
 	width: 100%;
 	overflow-x: hidden;
+	direction: rtl;
 }
 
 body {
@@ -220,6 +221,11 @@ nav .logo img {
 	width: auto;
 }
 
+
+button {
+	box-shadow: none !important;
+	outline: 0 !important;
+}
 
 nav h4 {
 	padding: 10px 20px;
@@ -323,24 +329,30 @@ nav h4 {
 
 .calls .list-view {
 	position: absolute;
-	padding-top: 51px;
-	top: 0;
+	text-align: right;
+	top: 51px;
 	bottom: 0;
 	width: 100%;
 	overflow: auto;
+	display: block;
 	z-index: 0;
 	margin: 0;
 }
 
 .calls .list-view li {
-	padding: 15px 10px;
-	border-bottom: 1px solid #eee;
 	cursor: pointer;
+	padding: 10px;
+	border-bottom: 1px solid #eee;
 }
-
 
 .calls .list-view li:last-child {
 	border: none;
+}
+
+.calls .list-view li p {
+	width: calc(100% / 6);
+	float: right;
+	margin: 0;
 }
 
 .video {
@@ -506,9 +518,37 @@ form button {
 	padding: 9px;
 }
 
+.handle.warning {
+	color: orange;
+}
+
+.handle.ended {
+	color: green;
+}
+
+
+.blink {
+	animation: blink-animation 1s steps(5, start) infinite;
+	-webkit-animation: blink-animation 1s steps(5, start) infinite;
+	color: red;
+}
+@keyframes blink-animation {
+	to {
+		visibility: hidden;
+	}
+}
+@-webkit-keyframes blink-animation {
+	to {
+		visibility: hidden;
+	}
+}
+
 
 @media (min-width: 992px) {
 	.col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {
 		float: right;
 	}
 }
+
+
+
