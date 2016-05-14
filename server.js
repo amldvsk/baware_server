@@ -78,7 +78,7 @@ app.get('*', function(req, res) {
 
 
 EServcies.find(
-    { point :
+    { loc :
         { $near :
             {
                 $geometry : {
