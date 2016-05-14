@@ -82,7 +82,6 @@ EServcies.find(
         { $near :
             {
                 $geometry : {
-                    type : "Point" ,
                     coordinates : [34.801050, 31.285517] },
             }
         }
