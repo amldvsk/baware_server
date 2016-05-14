@@ -349,12 +349,13 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
     var jw_width = 640, jw_height = h;
     jwplayer.key = "D1v8Fw6eKkzR6cKxgcciMrRu5JJVMgFNOuwgjg=="
     function startPlayer(id) {
+        console.log('rtmp://46.101.103.26:1935/'+dept+'/'+id);
         jwplayer('player').setup({
             height: jw_height,
             width: jw_width,
             stretching: 'exactfit',
             sources: [{
-                file: 'rtmp://46.101.99.6:1935/'+dept+'/'+id
+                file: 'rtmp://46.101.103.26:1935/'+dept+'/'+id
             }],
             rtmp: {
                 bufferlength: 3
