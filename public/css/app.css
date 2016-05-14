@@ -221,6 +221,18 @@ nav .logo img {
 	width: auto;
 }
 
+nav ul {
+	margin: 0;
+}
+
+nav ul li a {
+	cursor: pointer;
+	display: block;
+	text-decoration: none !important;
+	padding: 10px 0;
+	color: #fff;
+}
+
 
 button {
 	box-shadow: none !important;

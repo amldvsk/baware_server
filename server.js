@@ -133,7 +133,6 @@ policeNsp.on('connection', function(socket){
 
     socket.on('connectedToUser', function(msg) {
         console.log('now dispatch is connected to user');
-        console.log(msg);
         socket.join(msg.report);
         log = new ReportLog();
         log.report = msg.report;
@@ -156,7 +155,6 @@ policeNsp.on('connection', function(socket){
         log.report = msg.report;
         log.dispatch = msg.dispatch;
         log.msg = msg.msg;
-        console.log(msg);
         log.save(function(err) {
             if(err) {
                 console.log(err)
