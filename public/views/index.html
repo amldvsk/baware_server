@@ -14,11 +14,41 @@
     <div class="container-fluid clearfix">
         <div class="logo pull-right"><a ui-sref="/"><img src="img/logo.svg"></a></div>
         <h4 class="pull-right" ng-show="dept">{{ dept }}</h4>
+        <div class="pull-left">
+            <ul class="list-unstyled">
+                <li><a ng-click="about = !about">אודות</a></li>
+            </ul>
+        </div>
     </div>
-</nav>
-<div class="main" ui-view>
 
+
+
+</nav>
+<div class="main" ui-view></div>
+
+<div class="credits" ng-class="{ 'show-pop' : about }">
+    <div class="container">
+        <div class="exit clearfix">
+            <a ng-click="about = false"><i class="fa fa-times"></i></a>
+        </div>
+        <div class="card">
+            <img class="sce" src="http://www.sce.ac.il/kenes/img/logo-new-2013.jpg" alt="">
+            <p><small><em>Sami Shamoon College of Engineering</em></small></p>
+            <p><small><em>Software Department</em></small></p>
+            <h4>B.Aware</h4>
+            <p>Live streaming Emergency reports</p>
+            <hr>
+            <h4>Created By</h4>
+            <ul class="list-unstyled">
+                <li><p>Adi Moldavski</p></li>
+                <li><p>Adi Moldavski</p></li>
+                <li><p>Adi Moldavski</p></li>
+            </ul>
+        </div>
+    </div>
 </div>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?language=he"></script>

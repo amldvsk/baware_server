@@ -149,10 +149,13 @@ function MainController($scope, BawareService, $rootScope) {
 
     }
 
+    
+
 }
 
 function DispatchController($scope, $timeout, BawareService, $stateParams, $rootScope) {
     console.log('DispatchController');
+
 
 
     var dept = $stateParams.dept;

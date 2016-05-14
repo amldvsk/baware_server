@@ -103,7 +103,7 @@ policeNsp.on('connection', function(socket){
 
             User.addNewUser(testUser, function(user) {
                 socket.join(user.report._id);
-                policeNsp.to(user.report._id).emit('reportCreated', {report : user.report._id});
+                policeNsp.to(user.report._id).emit('reportCreated', {report : user.report._id, dispatch_name : locations[0].name});
                 policeNsp.to(locations[0]._id).emit('newCall', user);
             });
         })
