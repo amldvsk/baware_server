@@ -35,17 +35,32 @@ serviceSchema.pre('save', function(next) {
 });
 
 
+// serviceSchema.statics.findNearest = function (type, coords, cb) {
+//     // return this.find({ name: new RegExp(name, 'i') }, cb);
+//
+//     return this.find({
+//         loc: {
+//             $near: coords,
+//         },
+//         eSType : type
+//     }, cb);
+// }
+
+
 serviceSchema.statics.findNearest = function (type, coords, cb) {
     // return this.find({ name: new RegExp(name, 'i') }, cb);
 
     return this.find({
         loc: {
-            $near: coords,
+            $near: {
+                $geometry : {
+                    coordinates : coords
+                },
+            },
         },
         eSType : type
     }, cb);
 }
-
 
 
 
