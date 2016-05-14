@@ -298,11 +298,10 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
 
     $scope.focusOnMarker = function(call) {
         call.newMsg = false;
-        console.log(call);
         $scope.map = { center: { latitude: call.location.lat, longitude: call.location.lng }, zoom: 16 };
         currentUser = call.report.user._id;
         currentReport = call.report._id;
-        startPlayer();
+        startPlayer(call.report.user.phoneId);
         if( call.report.handle == 0 )
             socket.emit('connectedToUser', { user : currentUser, dispatch : deptId, report : currentReport });
         if( call.report.handle != 2 )
@@ -355,7 +354,7 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
             width: jw_width,
             stretching: 'exactfit',
             sources: [{
-                file: 'rtmp://46.101.99.6:1935/dept/'+id
+                file: 'rtmp://46.101.99.6:1935/'+dept+'/'+id
             }],
             rtmp: {
                 bufferlength: 3
