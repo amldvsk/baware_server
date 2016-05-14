@@ -83,7 +83,7 @@ EServcies.find(
             {
                 $geometry : {
                     type : "Point" ,
-                    coordinates : [31.285517, 34.801050] },
+                    coordinates : [34.801050, 31.285517] },
             }
         }
     }, function(err, loc) {
