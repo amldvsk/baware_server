@@ -77,22 +77,22 @@ app.get('*', function(req, res) {
 
 
 
-EServcies.find(
-    { loc :
-        { $near :
-            {
-                $geometry : {
-                    coordinates : [34.801050, 31.285517] },
-            }
-        }
-    }, function(err, loc) {
-        if(err) {
-            console.log(err);
-        } else {
-            console.log(loc);
-        }
-    }
-)
+// EServcies.find(
+//     { loc :
+//         { $near :
+//             {
+//                 $geometry : {
+//                     coordinates : [34.801050, 31.285517] },
+//             }
+//         }
+//     }, function(err, loc) {
+//         if(err) {
+//             console.log(err);
+//         } else {
+//             console.log(loc);
+//         }
+//     }
+// )
 
 var io = require('socket.io').listen(app.listen(3000, '0.0.0.0', function() {
     console.log('Listening to port:  ' + 3000);
