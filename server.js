@@ -69,8 +69,16 @@ app.get('*', function(req, res) {
 });
 
 
-EServcies.findNearest( 1, [34.801050, 31.285517] , function(err, locations) {
-    console.log(locations);
+// EServcies.findNearest( 1, [34.801050, 31.285517] , function(err, locations) {
+//     console.log(locations);
+// });
+
+EServcies.find({loc: {$near: [34.801050, 31.285517]}},function(err, loc){
+    if(err) {
+        console.log(err);
+    } else {
+        console.log(loc);
+    }
 });
 
 var io = require('socket.io').listen(app.listen(3000, '0.0.0.0', function() {
