@@ -230,7 +230,7 @@ nav ul li a {
 	display: block;
 	text-decoration: none !important;
 	padding: 10px 0;
-	color: #fff;
+	color: #fff !important;
 }
 
 
@@ -590,7 +590,7 @@ form button {
 }
 
 .credits .container .exit i {
-	color: #fff;
+	color: #fff !important;
 	font-size: 25px;
 }
 

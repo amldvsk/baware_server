@@ -149,7 +149,7 @@ function MainController($scope, BawareService, $rootScope) {
 
     }
 
-    
+
 
 }
 
@@ -281,7 +281,7 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
         getAddress(data, data.user.loc[1], data.user.loc[0], marker);
 
 
-        startPlayer();
+
     }
 
 
@@ -298,10 +298,11 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
 
     $scope.focusOnMarker = function(call) {
         call.newMsg = false;
-
+        console.log(call);
         $scope.map = { center: { latitude: call.location.lat, longitude: call.location.lng }, zoom: 16 };
         currentUser = call.report.user._id;
         currentReport = call.report._id;
+        startPlayer();
         if( call.report.handle == 0 )
             socket.emit('connectedToUser', { user : currentUser, dispatch : deptId, report : currentReport });
         if( call.report.handle != 2 )
@@ -354,7 +355,7 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
             width: jw_width,
             stretching: 'exactfit',
             sources: [{
-                file: 'rtmp://37.139.20.85:1935/live/'+id
+                file: 'rtmp://46.101.99.6:1935/dept/'+id
             }],
             rtmp: {
                 bufferlength: 3
