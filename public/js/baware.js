@@ -256,8 +256,8 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
         var marker = {
             id: 0,
             coords: {
-                latitude: data.user.loc[1],
-                longitude: data.user.loc[0]
+                latitude: data.loc[1],
+                longitude: data.loc[0]
             },
             options: { draggable: false },
             events: {
@@ -275,10 +275,10 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
             }
         };
         $scope.markers.push(marker);
-        $scope.map = { center: { latitude: data.user.loc[1], longitude: data.user.loc[0] }, zoom: 16 };
+        $scope.map = { center: { latitude: data.loc[1], longitude: data.loc[0] }, zoom: 16 };
 
 
-        getAddress(data, data.user.loc[1], data.user.loc[0], marker);
+        getAddress(data, data.loc[1], data.loc[0], marker);
 
 
 
@@ -289,7 +289,7 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
     function getAddress(data, lat, lon, marker) {
         BawareService.getAddressFromCoor(lat, lon).then(function(result) {
             //$scope.msgs.push( { dispatch : 0, msg : data.report.msg, time : data.report.created_at });
-            $scope.calls.unshift( { id : 1,location : { lat : data.user.loc[1], lng : data.user.loc[0], address : result.data.results[0].formatted_address, marker : marker } , report : data, newMsg : data.newMsg } );
+            $scope.calls.unshift( { id : 1,location : { lat : data.loc[1], lng : data.loc[0], address : result.data.results[0].formatted_address, marker : marker } , report : data, newMsg : data.newMsg } );
         });
     }
 

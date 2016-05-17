@@ -9,6 +9,10 @@ var reportSchema = new Schema({
     user:  {type : mongoose.Schema.ObjectId, ref : 'User'} ,
     service:  {type : mongoose.Schema.ObjectId, ref : 'Service'} ,
     handle : { type: Number, default: 0 },
+    loc: {
+        type: [Number],  // [<longitude>, <latitude>]
+        index: '2d'      // create the geospatial index
+    },
     created_at: Date,
     updated_at: Date
 });
@@ -35,6 +39,7 @@ reportSchema.statics.addNewReport = function (report, cb) {
     reportNew = new Report();
     reportNew.user = report.user._id;
     reportNew.service =  report.service;
+    reportNew.loc = [report.user.loc[0], report.user.loc[1]]
     reportNew.save(function(err) {
         if(!err) {
 
