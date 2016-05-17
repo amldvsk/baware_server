@@ -18,7 +18,7 @@
         </div>
         <ul class="list-view list-unstyled clearfix">
             <li class="clearfix" ng-repeat="call in calls" ng-click="focusOnMarker(call)">
-                <p>{{ call.report._id }}</p>
+                <p>{{ calls.length - $index }}</p>
                 <p>{{ call.location.address }}</p>
                 <p>{{ call.location.lat }}</p>
                 <p>{{ call.location.lng }}</p>
