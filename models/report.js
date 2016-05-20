@@ -40,6 +40,7 @@ reportSchema.statics.addNewReport = function (report, loc,cb) {
     reportNew.user = report.user._id;
     reportNew.service =  report.service;
     reportNew.loc = report.loc
+    console.log(report);
     reportNew.save(function(err) {
         if(!err) {
 
