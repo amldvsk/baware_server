@@ -2,8 +2,8 @@
 <div class="row-wapper">
     <div class="map">
         <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-            <ui-gmap-marker ng-repeat="marker in markers" coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id" click="marker.click">
-            </ui-gmap-marker>
+            <ui-gmap-markers models="markers" coords="'coords'" options="'options'" events="'events'" idkey="'id'" click="'click'">
+            </ui-gmap-markers>
         </ui-gmap-google-map>
     </div>
     <div class="video" >
