@@ -46,7 +46,7 @@ userSchema.statics.addNewUser = function (userData, cb) {
             user.save(function(err) {
                 if(!err) {
 
-                    Report.addNewReport({ service : userData.service, user : user }, function(data) {
+                    Report.addNewReport({ service : userData.service, user : user, loc : [ userData.log, userData.lat ] }, function(data) {
                         var u = data.toJSON();
                         u.user = user;
                         cb({

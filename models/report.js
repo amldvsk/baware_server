@@ -35,17 +35,17 @@ reportSchema.pre('save', function(next) {
 
 
 
-reportSchema.statics.addNewReport = function (report, cb) {
+reportSchema.statics.addNewReport = function (report, loc,cb) {
     reportNew = new Report();
     reportNew.user = report.user._id;
     reportNew.service =  report.service;
-    reportNew.loc = [report.user.loc[0], report.user.loc[1]]
+    reportNew.loc = report.loc
     reportNew.save(function(err) {
         if(!err) {
 
             log = new Log();
             log.report = reportNew;
-            getAdressFromCoor( report.user.loc[1], report.user.loc[0] , function(msg) {
+            getAdressFromCoor( report.loc[1], report.loc[0] , function(msg) {
                 log.msg = msg;
                 log.dispatch = false;
                 log.save(function(err) {
