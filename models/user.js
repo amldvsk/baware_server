@@ -60,7 +60,7 @@ userSchema.statics.addNewUser = function (userData, cb) {
                 }
             });
         } else {
-            Report.addNewReport({ service : userData.service, user : userr }, function(data) {
+            Report.addNewReport({ service : userData.service, user : userr, loc : [ userData.log, userData.lat ] }, function(data) {
                 var u = data.toJSON();
                 u.user = userr;
                 cb({
