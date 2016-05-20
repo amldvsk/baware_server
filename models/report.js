@@ -35,8 +35,7 @@ reportSchema.pre('save', function(next) {
 
 
 
-reportSchema.statics.addNewReport = function (report, loc,cb) {
-    console.log(report);
+reportSchema.statics.addNewReport = function (report,cb) {
     reportNew = new Report();
     reportNew.user = report.user._id;
     reportNew.service =  report.service;
