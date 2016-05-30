@@ -247,7 +247,7 @@ medicalNsp.on('connection', function(socket){
         console.log('user disconnected');
 
         var user = users[socket.id];
-        policeNsp.emit('connectionClosed', user);
+        medicalNsp.emit('connectionClosed', user);
     });
 
     socket.on('connectToService', function(msg) {
