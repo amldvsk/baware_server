@@ -180,7 +180,7 @@ fireNsp.on('connection', function(socket){
         console.log('user disconnected');
 
         var user = users[socket.id];
-        policeNsp.emit('connectionClosed', user);
+        fireNsp.emit('connectionClosed', user);
     });
 
     socket.on('connectToService', function(msg) {
@@ -190,8 +190,8 @@ fireNsp.on('connection', function(socket){
 
             User.addNewUser(testUser, function(user) {
                 socket.join(user.report._id);
-                policeNsp.to(user.report._id).emit('reportCreated', {report : user.report._id, dispatch_name : locations[0].name});
-                policeNsp.to(locations[0]._id).emit('newCall', user);
+                fireNsp.to(user.report._id).emit('reportCreated', {report : user.report._id, dispatch_name : locations[0].name});
+                fireNsp.to(locations[0]._id).emit('newCall', user);
             });
         })
     })
@@ -209,7 +209,7 @@ fireNsp.on('connection', function(socket){
             if(err) {
                 console.log(err)
             } else {
-                policeNsp.to(msg.report).emit('message', log);
+                fireNsp.to(msg.report).emit('message', log);
             }
         });
 
@@ -226,7 +226,7 @@ fireNsp.on('connection', function(socket){
             if(err) {
                 console.log(err)
             } else {
-                policeNsp.to(msg.report).emit('message', log);
+                fireNsp.to(msg.report).emit('message', log);
             }
         });
     });
@@ -257,8 +257,8 @@ medicalNsp.on('connection', function(socket){
 
             User.addNewUser(testUser, function(user) {
                 socket.join(user.report._id);
-                policeNsp.to(user.report._id).emit('reportCreated', {report : user.report._id, dispatch_name : locations[0].name});
-                policeNsp.to(locations[0]._id).emit('newCall', user);
+                medicalNsp.to(user.report._id).emit('reportCreated', {report : user.report._id, dispatch_name : locations[0].name});
+                medicalNsp.to(locations[0]._id).emit('newCall', user);
             });
         })
     })
@@ -276,7 +276,7 @@ medicalNsp.on('connection', function(socket){
             if(err) {
                 console.log(err)
             } else {
-                policeNsp.to(msg.report).emit('message', log);
+                medicalNsp.to(msg.report).emit('message', log);
             }
         });
 
@@ -293,7 +293,7 @@ medicalNsp.on('connection', function(socket){
             if(err) {
                 console.log(err)
             } else {
-                policeNsp.to(msg.report).emit('message', log);
+                medicalNsp.to(msg.report).emit('message', log);
             }
         });
     });
