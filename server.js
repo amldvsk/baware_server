@@ -251,7 +251,7 @@ medicalNsp.on('connection', function(socket){
     });
 
     socket.on('connectToService', function(msg) {
-        console.log('new user connected to police');
+        console.log('new user connected to medical');
         EServcies.findNearest( 2, [msg.long, msg.lat] , function(err, locations) {
             var testUser = { phoneId : msg.phoneId, lat: msg.lat, log: msg.long, service : locations[0]._id }
 
