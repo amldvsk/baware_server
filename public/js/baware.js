@@ -195,7 +195,7 @@ function DispatchController($scope, $timeout, BawareService, $stateParams, $root
 
     function connectToSocket() {
 
-        var deptArr =  ['police', 'fire', 'medical'];
+        var deptArr =  ['police', 'medical', 'fire'];
 
         socket = io.connect(window.location.host+'/'+deptArr[dept-1]);
 
